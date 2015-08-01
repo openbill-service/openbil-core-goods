@@ -3,8 +3,8 @@
 query="$1"
 value="$2"
 
-echo -n "Execute '$query' has error '$value': "
-RES=`echo "$query" | ./tests/sql.sh`
+echo -n "Execute '$query' is equal '$value': "
+RES=`echo "$query" | ./tests/sql.sh 2>&1`
 
 if [ $? = 0 ]; then
   if [ "$RES" = "$value" ]; then
