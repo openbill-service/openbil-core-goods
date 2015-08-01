@@ -10,7 +10,7 @@ if [ $? = 0 ]; then
   if [ "$RES" = "$value" ]; then
     echo 'ok'
   else
-    echo "ERROR! Not equal $RES <> $2"
+    echo "FAIL! Not equal $RES <> $2"
     exit 1
   fi
 else
