@@ -2,4 +2,4 @@
 *.swp
 *.swo
 *.todo
-/logs/*.log
+/log/*.log

@@ -2,7 +2,7 @@
 
 test -z "$PGDATABASE" && PGDATABASE='openbill_tests'
 
-LOGS_DIR='./logs/'; test -d $LOGS_DIR || mkdir $LOGS_DIR
+LOGS_DIR='./log/'; test -d $LOGS_DIR || mkdir $LOGS_DIR
 
 LOGFILE="$LOGS_DIR/create.log"
 
