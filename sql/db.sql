@@ -6,7 +6,7 @@ CREATE EXTENSION IF NOT EXISTS hstore WITH SCHEMA public;
 CREATE                TABLE OPENBILL_ACCOUNTS (
   id                  BIGSERIAL PRIMARY KEY,
   owner_uri           character varying(2048) not null,
-  amount              numeric not null default 0,
+  amount_cents        numeric not null default 0,
   amount_currency     char(3) not null default 'USD',
   details             text,
   transactions_count  integer not null default 0,
@@ -28,7 +28,7 @@ CREATE TABLE OPENBILL_TRANSACTIONS (
   created_at      timestamp without time zone default current_timestamp,
   from_account_id integer not null,
   to_account_id   integer not null,
-  amount          numeric not null CONSTRAINT positive CHECK (amount>0),
+  amount_cents    numeric not null CONSTRAINT positive CHECK (amount_cents>0),
   amount_currency char(3) not null,
   order_uri       character varying(2048) not null,
   details         text not null,

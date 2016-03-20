@@ -16,8 +16,8 @@ BEGIN
 
 
   -- установить last_transaction_id, counts и _at
-  UPDATE OPENBILL_ACCOUNTS SET amount = amount - NEW.amount, last_transaction_id = NEW.id, last_transaction_at = NEW.created_at, transactions_count = transactions_count + 1 WHERE id = NEW.from_account_id;
-  UPDATE OPENBILL_ACCOUNTS SET amount = amount + NEW.amount, last_transaction_id = NEW.id, last_transaction_at = NEW.created_at, transactions_count = transactions_count + 1 WHERE id = NEW.to_account_id;
+  UPDATE OPENBILL_ACCOUNTS SET amount_cents = amount_cents - NEW.amount_cents, last_transaction_id = NEW.id, last_transaction_at = NEW.created_at, transactions_count = transactions_count + 1 WHERE id = NEW.from_account_id;
+  UPDATE OPENBILL_ACCOUNTS SET amount_cents = amount_cents + NEW.amount_cents, last_transaction_id = NEW.id, last_transaction_at = NEW.created_at, transactions_count = transactions_count + 1 WHERE id = NEW.to_account_id;
 
   return NEW;
 END
