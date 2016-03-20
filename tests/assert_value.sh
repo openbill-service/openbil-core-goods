@@ -3,7 +3,7 @@
 query="$1"
 value="$2"
 
-echo -n "Execute '$query' is equal to '$value': "
+echo -n "\tExecute '$query' is equal to '$value': "
 RES=`echo "$query" | psql --no-align -t -q`
 
 if [ $? = 0 ]; then

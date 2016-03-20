@@ -20,6 +20,8 @@ Open Source Billing core.
 
 # Тесты
 
+> ./test.sh
+
 ## Негативные
 
 Транзакции:
@@ -45,7 +47,7 @@ Open Source Billing core.
 * Создается аккаунт - done
 * Проводится транзакция - done
 
-Another solutions:
+## Другие решения
 
 * http://balancedbilly.readthedocs.org/en/latest/getting_started.html#create-a-customer
 * http://demo.opensourcebilling.org/invoices
