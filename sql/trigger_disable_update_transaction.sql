@@ -8,4 +8,4 @@ END
 $disable_update_transaction$ LANGUAGE plpgsql;
 
 CREATE TRIGGER disable_update_transaction
-  BEFORE UPDATE OR DELETE ON TRANSACTIONS FOR EACH ROW EXECUTE PROCEDURE disable_update_transaction();
+  BEFORE UPDATE OR DELETE ON OPENBILL_TRANSACTIONS FOR EACH ROW EXECUTE PROCEDURE disable_update_transaction();

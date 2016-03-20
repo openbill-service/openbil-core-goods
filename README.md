@@ -6,6 +6,10 @@ Open Source Billing core.
 
 Биллинг создан по принципу меньше фунционала, но больше надежности. 
 
+# Установка
+
+> PGDATABASE=openbill_development ./scripts/create.sh
+
 # Надежность
 
 Чем обсуловлена неджность данного решения?
@@ -20,7 +24,7 @@ Open Source Billing core.
 
 # Тесты
 
-> ./test.sh
+> ./run_all_tests.sh
 
 ## Негативные
 
@@ -35,6 +39,7 @@ Open Source Billing core.
 
 * Невозможно изменить `amount`, `amount_currency` или данные последней транзакции у счета напрямую.
 * `updated_at` изменяется при любом апдейте `accounts`
+* [ ] невозможнос создать аккаунт с не нулевым балансом
 
 Безопасность:
 

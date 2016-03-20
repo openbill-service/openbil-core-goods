@@ -3,7 +3,7 @@ CREATE EXTENSION IF NOT EXISTS hstore WITH SCHEMA public;
 
 -- CREATE EXTENSION IF NOT EXISTS intarray WITH SCHEMA public;
 
-CREATE                TABLE accounts (
+CREATE                TABLE OPENBILL_ACCOUNTS (
   id                  BIGSERIAL PRIMARY KEY,
   owner_uri           character varying(2048) not null,
   amount              numeric not null default 0,
@@ -17,12 +17,12 @@ CREATE                TABLE accounts (
   updated_at          timestamp without time zone default current_timestamp
 );
 
-CREATE UNIQUE INDEX index_accounts_on_id ON accounts USING btree (id);
-CREATE UNIQUE INDEX index_accounts_on_owner_uri ON accounts USING btree (owner_uri);
-CREATE INDEX index_accounts_on_meta ON accounts USING gin (meta);
-CREATE INDEX index_accounts_on_created_at ON accounts USING btree (created_at);
+CREATE UNIQUE INDEX index_accounts_on_id ON OPENBILL_ACCOUNTS USING btree (id);
+CREATE UNIQUE INDEX index_accounts_on_owner_uri ON OPENBILL_ACCOUNTS USING btree (owner_uri);
+CREATE INDEX index_accounts_on_meta ON OPENBILL_ACCOUNTS USING gin (meta);
+CREATE INDEX index_accounts_on_created_at ON OPENBILL_ACCOUNTS USING btree (created_at);
 
-CREATE TABLE transactions (
+CREATE TABLE OPENBILL_TRANSACTIONS (
   id              BIGSERIAL PRIMARY KEY,
   username        character varying(255) not null,
   created_at      timestamp without time zone default current_timestamp,
@@ -33,12 +33,12 @@ CREATE TABLE transactions (
   order_uri       character varying(2048) not null,
   details         text not null,
   meta            hstore not null default ''::hstore,
-  foreign key (from_account_id) REFERENCES accounts (id) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  foreign key (to_account_id) REFERENCES accounts (id)
+  foreign key (from_account_id) REFERENCES OPENBILL_ACCOUNTS (id) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  foreign key (to_account_id) REFERENCES OPENBILL_ACCOUNTS (id)
 );
 
-CREATE UNIQUE INDEX index_transactions_on_order_uri ON transactions USING btree (order_uri);
-CREATE INDEX index_transactions_on_meta ON transactions USING gin (meta);
-CREATE INDEX index_transactions_on_created_at ON transactions USING btree (created_at);
+CREATE UNIQUE INDEX index_transactions_on_order_uri ON OPENBILL_TRANSACTIONS USING btree (order_uri);
+CREATE INDEX index_transactions_on_meta ON OPENBILL_TRANSACTIONS USING gin (meta);
+CREATE INDEX index_transactions_on_created_at ON OPENBILL_TRANSACTIONS USING btree (created_at);
 
-ALTER TABLE accounts ADD FOREIGN KEY(last_transaction_id) REFERENCES transactions(id) ON DELETE RESTRICT ON UPDATE RESTRICT;
+ALTER TABLE OPENBILL_ACCOUNTS ADD FOREIGN KEY(last_transaction_id) REFERENCES OPENBILL_TRANSACTIONS(id) ON DELETE RESTRICT ON UPDATE RESTRICT;

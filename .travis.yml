@@ -1,4 +1,4 @@
 addons:
     postgresql: "9.2"
 script: 
-  - ./test.sh
+  - ./run_all_tests.sh
