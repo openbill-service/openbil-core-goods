@@ -9,7 +9,6 @@ CREATE                TABLE accounts (
   amount              numeric not null default 0,
   amount_currency     char(3) not null default 'USD',
   details             text,
-  is_active           boolean not null default true,
   transactions_count  integer not null default 0,
   last_transaction_id integer,
   last_transaction_at timestamp without time zone,
@@ -25,6 +24,7 @@ CREATE INDEX index_accounts_on_created_at ON accounts USING btree (created_at);
 
 CREATE TABLE transactions (
   id              BIGSERIAL PRIMARY KEY,
+  username        character varying(255) not null,
   created_at      timestamp without time zone default current_timestamp,
   from_account_id integer not null,
   to_account_id   integer not null,

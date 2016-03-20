@@ -1,2 +1,2 @@
-export PGDATABASE='openbill_test'
+. ./tests/config.sh
 ./scripts/create.sh

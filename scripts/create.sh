@@ -14,4 +14,4 @@ echo $message > $LOGFILE
 dropdb --if-exists $PGDATABASE >> $LOGFILE && \
   createdb $PGDATABASE >> $LOGFILE && \
   psql $PGDATABASE < ./sql/db.sql >> $LOGFILE && \
-  psql $PGDATABASE < ./sql/triggers.sql >> $LOGFILE
+  cat ./sql/trigger*.sql | psql $PGDATABASE >> $LOGFILE

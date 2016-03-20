@@ -1,19 +1,23 @@
-
+. ./tests/config.sh
 
 echo "Run all tests"
 
-res=0
+fails=0
 for test in ./tests/test*.sh 
 do
-  echo "\nRun test: $test"
+  echo -e "\nRun test: $test"
   $test
 
   if [ $? != 0 ]; then
-    res=1
+    fails=`echo 1 + $fails | bc`
   fi
+
+  ./tests/assert_balance.sh
 done
 
-if [ $res != 0 ]; then
-  echo "Some tests failed"
+if [ $fails != 0 ]; then
+  echo -e "\nFAIL: $fails tests are failed"
   exit 1
+else
+  echo "ALL DONE!"
 fi

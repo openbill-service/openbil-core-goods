@@ -3,14 +3,14 @@
 query="$1"
 value="$2"
 
-echo -n "Execute '$query' has error '$value': "
-RES=`echo "$query" | ./tests/sql.sh`
+echo -n "Execute '$query' is equal to '$value': "
+RES=`echo "$query" | psql --no-align -t -q`
 
 if [ $? = 0 ]; then
   if [ "$RES" = "$value" ]; then
     echo 'ok'
   else
-    echo "FAIL! No error $RES <> $2"
+    echo "FAIL! Not equal $RES <> $2"
     exit 1
   fi
 else
