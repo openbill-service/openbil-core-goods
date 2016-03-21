@@ -5,7 +5,7 @@ CREATE EXTENSION IF NOT EXISTS hstore WITH SCHEMA public;
 
 CREATE                TABLE OPENBILL_ACCOUNTS (
   id                  BIGSERIAL PRIMARY KEY,
-  owner_uri           character varying(2048) not null,
+  uri           character varying(2048) not null,
   amount_cents        numeric not null default 0,
   amount_currency     char(3) not null default 'USD',
   details             text,
@@ -18,7 +18,7 @@ CREATE                TABLE OPENBILL_ACCOUNTS (
 );
 
 CREATE UNIQUE INDEX index_accounts_on_id ON OPENBILL_ACCOUNTS USING btree (id);
-CREATE UNIQUE INDEX index_accounts_on_owner_uri ON OPENBILL_ACCOUNTS USING btree (owner_uri);
+CREATE UNIQUE INDEX index_accounts_on_uri ON OPENBILL_ACCOUNTS USING btree (uri);
 CREATE INDEX index_accounts_on_meta ON OPENBILL_ACCOUNTS USING gin (meta);
 CREATE INDEX index_accounts_on_created_at ON OPENBILL_ACCOUNTS USING btree (created_at);
 
@@ -30,14 +30,14 @@ CREATE TABLE OPENBILL_TRANSACTIONS (
   to_account_id   integer not null,
   amount_cents    numeric not null CONSTRAINT positive CHECK (amount_cents>0),
   amount_currency char(3) not null,
-  order_uri       character varying(2048) not null,
+  uri       character varying(2048) not null,
   details         text not null,
   meta            hstore not null default ''::hstore,
   foreign key (from_account_id) REFERENCES OPENBILL_ACCOUNTS (id) ON DELETE RESTRICT ON UPDATE RESTRICT,
   foreign key (to_account_id) REFERENCES OPENBILL_ACCOUNTS (id)
 );
 
-CREATE UNIQUE INDEX index_transactions_on_order_uri ON OPENBILL_TRANSACTIONS USING btree (order_uri);
+CREATE UNIQUE INDEX index_transactions_on_uri ON OPENBILL_TRANSACTIONS USING btree (uri);
 CREATE INDEX index_transactions_on_meta ON OPENBILL_TRANSACTIONS USING gin (meta);
 CREATE INDEX index_transactions_on_created_at ON OPENBILL_TRANSACTIONS USING btree (created_at);
 
