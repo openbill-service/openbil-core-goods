@@ -1,6 +1,6 @@
-# openbill
+# openbill core
 
-[![Build Status](https://travis-ci.org/dapi/openbill-core.svg)](https://travis-ci.org/BrandyMint/openbill-core)
+[![Build Status](https://travis-ci.org/dapi/openbill-core.svg)](https://travis-ci.org/dapi/openbill-core)
 
 Open Source Billing core.
 
