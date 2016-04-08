@@ -10,7 +10,7 @@ if [ $? = 0 ]; then
   if [ "$RES" = "$value" ]; then
     echo 'ok'
   else
-    echo "FAIL! No result $RES <> $2"
+    echo "FAIL! No result '$RES' <> '$2'"
     exit 1
   fi
 else

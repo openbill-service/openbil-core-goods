@@ -1,8 +1,6 @@
 CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 CREATE EXTENSION IF NOT EXISTS hstore WITH SCHEMA public;
 
--- CREATE EXTENSION IF NOT EXISTS intarray WITH SCHEMA public;
-
 CREATE                TABLE OPENBILL_ACCOUNTS (
   id                  BIGSERIAL PRIMARY KEY,
   category            character varying(256) not null default 'common',
