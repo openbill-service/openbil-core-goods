@@ -13,10 +13,14 @@ CREATE                TABLE OPENBILL_ACCOUNTS (
   transactions_count  integer not null default 0,
   last_transaction_id integer,
   last_transaction_at timestamp without time zone,
+  available_incoming  boolean not null default true,
+  available_outgoing  boolean not null default true,
   meta                hstore not null default ''::hstore,
   created_at          timestamp without time zone default current_timestamp,
   updated_at          timestamp without time zone default current_timestamp
 );
+
+ALTER TABLE OPENBILL_ACCOUNTS ADD constraint some_availables CHECK (available_incoming OR available_outgoing);
 
 CREATE UNIQUE INDEX index_accounts_on_id ON OPENBILL_ACCOUNTS USING btree (id);
 CREATE UNIQUE INDEX index_accounts_on_key ON OPENBILL_ACCOUNTS USING btree (category, key);
@@ -41,5 +45,4 @@ CREATE TABLE OPENBILL_TRANSACTIONS (
 CREATE UNIQUE INDEX index_transactions_on_key ON OPENBILL_TRANSACTIONS USING btree (key);
 CREATE INDEX index_transactions_on_meta ON OPENBILL_TRANSACTIONS USING gin (meta);
 CREATE INDEX index_transactions_on_created_at ON OPENBILL_TRANSACTIONS USING btree (created_at);
-
 ALTER TABLE OPENBILL_ACCOUNTS ADD FOREIGN KEY(last_transaction_id) REFERENCES OPENBILL_TRANSACTIONS(id) ON DELETE RESTRICT ON UPDATE RESTRICT;
