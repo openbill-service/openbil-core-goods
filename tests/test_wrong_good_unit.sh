@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-. ./tests/init.sh
-. ./tests/2accounts.sh
+. ./tests/init.sh && \
+. ./tests/2accounts.sh && \
 
 ./tests/assert_result.sh "insert into OPENBILL_GOODS (title, unit) values ('Boxes', 'boxes');" "INSERT 0 1" && \
 ./tests/assert_result.sh "insert into OPENBILL_GOODS (title, unit) values ('Bottles', 'Bottles');" "INSERT 0 1" && \
