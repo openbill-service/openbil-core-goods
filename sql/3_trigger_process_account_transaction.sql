@@ -1,19 +1,26 @@
 CREATE OR REPLACE FUNCTION process_account_transaction() RETURNS TRIGGER AS $process_transaction$
 DECLARE
-  result text;
+  available boolean;
 BEGIN
   -- У всех счетов и транзакции должна быть одинаковая валюта
 
-  SELECT id FROM OPENBILL_ACCOUNTS where id = NEW.from_account_id and amount_currency = NEW.amount_currency INTO result;
+  SELECT available_outgoing FROM OPENBILL_ACCOUNTS where id = NEW.from_account_id and amount_currency = NEW.amount_currency INTO available;
   IF NOT FOUND THEN
     RAISE EXCEPTION 'Account (from #%) has wrong currency', NEW.from_account_id;
   END IF;
 
-  SELECT * FROM OPENBILL_ACCOUNTS where id = NEW.to_account_id and amount_currency = NEW.amount_currency INTO result;
+  IF NOT available THEN
+    RAISE EXCEPTION 'Account (from #%) does not allow outgoing transactions', NEW.from_account_id;
+  END IF;
+
+  SELECT available_incoming FROM OPENBILL_ACCOUNTS where id = NEW.to_account_id and amount_currency = NEW.amount_currency INTO available;
   IF NOT FOUND THEN
     RAISE EXCEPTION 'Account (to #%) has wrong currency', NEW.to_account_id;
   END IF;
 
+  IF NOT available THEN
+    RAISE EXCEPTION 'Account (to #%) does not allow incoming transactions', NEW.to_account_id;
+  END IF;
 
   -- установить last_transaction_id, counts и _at
   UPDATE OPENBILL_ACCOUNTS SET amount_cents = amount_cents - NEW.amount_cents, last_transaction_id = NEW.id, last_transaction_at = NEW.created_at, transactions_count = transactions_count + 1 WHERE id = NEW.from_account_id;
