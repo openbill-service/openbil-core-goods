@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-test -z "$PGDATABASE" && PGDATABASE='openbill_tests'
+test -z "$PGDATABASE" && PGDATABASE='openbill_test'
 
 LOGS_DIR='./log/'; test -d $LOGS_DIR || mkdir $LOGS_DIR
 
