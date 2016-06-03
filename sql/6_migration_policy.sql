@@ -1,10 +1,10 @@
 CREATE                TABLE OPENBILL_POLICIES (
-  id                  BIGSERIAL PRIMARY KEY,
+  id                  UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   name                character varying(256) not null,
-  from_category_id    integer,
-  to_category_id      integer,
-  from_account_id     integer,
-  to_account_id       integer,
+  from_category_id    uuid,
+  to_category_id      uuid,
+  from_account_id     uuid,
+  to_account_id       uuid,
 
   foreign key (from_category_id) REFERENCES OPENBILL_CATEGORIES (id),
   foreign key (to_category_id) REFERENCES OPENBILL_CATEGORIES (id),
@@ -16,8 +16,8 @@ CREATE UNIQUE INDEX index_openbill_policies_name ON OPENBILL_POLICIES USING btre
 
 CREATE OR REPLACE FUNCTION restrict_transaction() RETURNS TRIGGER AS $restrict_transaction$
 DECLARE
-  _from_category_id integer;
-  _to_category_id integer;
+  _from_category_id uuid;
+  _to_category_id uuid;
 BEGIN
   SELECT category_id FROM OPENBILL_ACCOUNTS where id = NEW.from_account_id INTO _from_category_id;
   SELECT category_id FROM OPENBILL_ACCOUNTS where id = NEW.to_account_id INTO _to_category_id;
