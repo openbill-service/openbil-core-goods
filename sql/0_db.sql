@@ -5,15 +5,13 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA public;
 CREATE                TABLE OPENBILL_CATEGORIES (
   id                  UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   name                character varying(256) not null,
-  key                 character varying(64) not null,
   parent_id           uuid,
   foreign key (parent_id) REFERENCES OPENBILL_CATEGORIES (id) ON DELETE RESTRICT
 );
 
-CREATE UNIQUE INDEX index_openbill_categories_key ON OPENBILL_CATEGORIES USING btree (key);
 CREATE UNIQUE INDEX index_openbill_categories_name ON OPENBILL_CATEGORIES USING btree (parent_id, name);
 
-INSERT INTO OPENBILL_CATEGORIES  (name, key, id) values ('System', 'system', '12832d8d-43f5-499b-82a1-3466cadcd809');
+INSERT INTO OPENBILL_CATEGORIES  (name, id) values ('System', '12832d8d-43f5-499b-82a1-3466cadcd809');
 
 CREATE                TABLE OPENBILL_ACCOUNTS (
   id                  UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
