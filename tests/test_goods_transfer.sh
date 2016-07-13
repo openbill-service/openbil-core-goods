@@ -5,10 +5,20 @@ export GOOD1_UUID="'12832d8d-43f5-499b-82a1-100000000006'"
 . ./tests/init.sh && \
 . ./tests/2accounts.sh && \
 
-./tests/assert_result.sh "insert into OPENBILL_GOODS (id, title, unit) values ($GOOD1_UUID, 'Boxes', 'boxes');" "INSERT 0 1" && \
-./tests/assert_result.sh "insert into OPENBILL_GOODS (title, unit) values ('Bottles', 'Bottles');" "INSERT 0 1" && \
+./tests/assert_result.sh "insert into OPENBILL_GOODS (owner_id, id, title, unit, unit_value) values ($OWNER_UUID, $GOOD1_UUID, 'Boxes', 'boxes', 1);" "INSERT 0 1" && \
+./tests/assert_result.sh "insert into OPENBILL_GOODS (owner_id, title, unit, unit_value) values ($OWNER_UUID, 'Bottles', 'Bottles', 1);" "INSERT 0 1" && \
 
-./tests/assert_result.sh "insert into OPENBILL_TRANSACTIONS (amount_cents, amount_currency, from_account_id, to_account_id, key, details, good_id, good_unit, good_value) values (100, 'USD', $ACCOUNT1_UUID, $ACCOUNT2_UUID, 'gid://order1', 'test', $GOOD1_UUID, 'boxes', 12.4);" "INSERT 0 1" && \
 
-./tests/assert_value.sh "select account_id, good_id, value from OPENBILL_GOODS_AVAILABILITIES" "12832d8d-43f5-499b-82a1-000000000001|12832d8d-43f5-499b-82a1-100000000006|-12.4
-12832d8d-43f5-499b-82a1-000000000002|12832d8d-43f5-499b-82a1-100000000006|12.4"
+# Добавили 100 товаров по 2.0 USD
+./tests/assert_result.sh "insert into OPENBILL_TRANSACTIONS (owner_id, amount_cents, amount_currency, from_account_id, to_account_id, key, details, good_id, good_unit, good_value, units_count, unit_price_cents, unit_price_currency ) values ($OWNER_UUID, 200, 'USD', $ACCOUNT1_UUID, $ACCOUNT2_UUID, 'gid://order1', 'test', $GOOD1_UUID, 'boxes', 100.0, 100, 2.0, 'USD');" "INSERT 0 1" && \
+
+# Получилась учетная цена - 2.0 USD
+./tests/assert_value.sh "select account_id, good_id, value, units_count, unit_price_cents from OPENBILL_GOODS_AVAILABILITIES" "12832d8d-43f5-499b-82a1-000000000001|12832d8d-43f5-499b-82a1-100000000006|-100.0|-100|2.0
+12832d8d-43f5-499b-82a1-000000000002|12832d8d-43f5-499b-82a1-100000000006|100.0|100|2.0" && \
+
+# Добавили еще 100 товаров по 3.0 USD
+./tests/assert_result.sh "insert into OPENBILL_TRANSACTIONS (owner_id, amount_cents, amount_currency, from_account_id, to_account_id, key, details, good_id, good_unit, good_value, units_count, unit_price_cents, unit_price_currency ) values ($OWNER_UUID, 300, 'USD', $ACCOUNT1_UUID, $ACCOUNT2_UUID, 'gid://order2', 'test', $GOOD1_UUID, 'boxes', 100.0, 100, 3.0, 'USD');" "INSERT 0 1" && \
+
+# Получилась учетная цена - 2.5 USD
+./tests/assert_value.sh "select account_id, good_id, value, units_count, unit_price_cents from OPENBILL_GOODS_AVAILABILITIES" "12832d8d-43f5-499b-82a1-000000000001|12832d8d-43f5-499b-82a1-100000000006|-200.0|-200|2.5000000000000000
+12832d8d-43f5-499b-82a1-000000000002|12832d8d-43f5-499b-82a1-100000000006|200.0|200|2.5000000000000000"

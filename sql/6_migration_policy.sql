@@ -1,4 +1,5 @@
 CREATE                TABLE OPENBILL_POLICIES (
+  owner_id            UUID,
   id                  UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   name                character varying(256) not null,
   from_category_id    uuid,
