@@ -23,10 +23,10 @@ CREATE                TABLE OPENBILL_GOODS_AVAILABILITIES (
   value               decimal not null default 0,
 
   -- Количество единиц товара
-  units_count         integer not null default 0, 
+  units_count         integer not null default 0,
 
   -- Учетная цена
-  unit_price_cents          numeric not null,
+  unit_price_cents          bigint not null,
   unit_price_currency       char(3) not null,
 
   created_at          timestamp without time zone default current_timestamp,
@@ -35,8 +35,8 @@ CREATE                TABLE OPENBILL_GOODS_AVAILABILITIES (
   foreign key (good_id) REFERENCES OPENBILL_GOODS (id) ON DELETE RESTRICT ON UPDATE RESTRICT
 );
 
-CREATE UNIQUE INDEX index_goods_availabilities 
-  ON OPENBILL_GOODS_AVAILABILITIES 
+CREATE UNIQUE INDEX index_goods_availabilities
+  ON OPENBILL_GOODS_AVAILABILITIES
   USING btree (owner_id, account_id, good_id);
 
 ALTER TABLE OPENBILL_TRANSACTIONS ADD column good_id uuid;
@@ -46,19 +46,19 @@ ALTER TABLE OPENBILL_TRANSACTIONS ADD column good_unit varchar(128) not null def
 -- Количество товара
 ALTER TABLE OPENBILL_TRANSACTIONS ADD column units_count integer;
 -- Стоимость одной единицы товара
-ALTER TABLE OPENBILL_TRANSACTIONS ADD column unit_price_cents numeric;
+ALTER TABLE OPENBILL_TRANSACTIONS ADD column unit_price_cents bigint;
 ALTER TABLE OPENBILL_TRANSACTIONS ADD column unit_price_currency char(3);
-ALTER TABLE OPENBILL_TRANSACTIONS 
-  ADD FOREIGN KEY(good_id) REFERENCES OPENBILL_GOODS(id) 
+ALTER TABLE OPENBILL_TRANSACTIONS
+  ADD FOREIGN KEY(good_id) REFERENCES OPENBILL_GOODS(id)
   ON DELETE RESTRICT ON UPDATE RESTRICT;
 
-ALTER TABLE OPENBILL_TRANSACTIONS 
+ALTER TABLE OPENBILL_TRANSACTIONS
   ADD CONSTRAINT good_data_existence CHECK (
     good_id IS NULL OR (good_id IS NOT NULL AND good_value IS NOT NULL AND good_unit IS NOT NULL AND units_count is NOT NULL and unit_price_cents is NOT NULL and unit_price_currency is NOT NULL)
   );
 
 -- Убеждаемся что общая сумма транзакции соответсвует количеству товара и стоимости единицы
-ALTER TABLE OPENBILL_TRANSACTIONS 
+ALTER TABLE OPENBILL_TRANSACTIONS
   ADD CONSTRAINT good_unit_price CHECK (
     good_id IS NULL OR (unit_price_cents * units_count = amount_cents)
   );
@@ -70,7 +70,7 @@ ALTER TABLE OPENBILL_TRANSACTIONS
 
 CREATE OR REPLACE FUNCTION process_account_transaction_with_good() RETURNS TRIGGER AS $process_transaction$
 DECLARE
-  current_unit_price_cents numeric;
+  current_unit_price_cents bigint;
   good_unit_value decimal;
 BEGIN
   PERFORM id FROM OPENBILL_GOODS where (owner_id = NEW.owner_id OR (NEW.owner_id is NULL and owner_id is NULL));
@@ -88,7 +88,7 @@ BEGIN
   END IF;
 
   -- Calculate current unit price
-  SELECT (unit_price_cents * units_count + NEW.unit_price_cents * NEW.units_count) / ( units_count + NEW.units_count ) FROM OPENBILL_GOODS_AVAILABILITIES 
+  SELECT (unit_price_cents * units_count + NEW.unit_price_cents * NEW.units_count) / ( units_count + NEW.units_count ) FROM OPENBILL_GOODS_AVAILABILITIES
     WHERE owner_id = NEW.owner_id AND account_id = NEW.to_account_id AND good_id = NEW.good_id AND units_count > 0 AND NEW.units_count > 0
     INTO current_unit_price_cents;
 
