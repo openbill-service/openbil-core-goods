@@ -26,6 +26,7 @@ CREATE                TABLE OPENBILL_ACCOUNTS (
   last_transaction_id uuid,
   last_transaction_at timestamp without time zone,
   meta                hstore not null default ''::hstore,
+  url                 character varying(2096),
   created_at          timestamp without time zone default current_timestamp,
   updated_at          timestamp without time zone default current_timestamp,
   foreign key (category_id) REFERENCES OPENBILL_CATEGORIES (id) ON DELETE RESTRICT
@@ -48,7 +49,7 @@ CREATE TABLE OPENBILL_OPERATIONS (
 );
 
 CREATE TABLE OPENBILL_TRANSACTIONS (
-  owner_id            UUID,
+  owner_id        UUID,
   id              UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   operation_id    UUID,
   username        character varying(255) not null,

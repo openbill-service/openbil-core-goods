@@ -98,7 +98,7 @@ BEGIN
 
   INSERT INTO OPENBILL_GOODS_AVAILABILITIES AS GA (owner_id, account_id, good_id, value, units_count, unit_price_cents, unit_price_currency)
     VALUES (NEW.owner_id, NEW.from_account_id, NEW.good_id, -NEW.good_value, -NEW.units_count, NEW.unit_price_cents, NEW.unit_price_currency)
-    ON CONFLICT (owner_id, account_id, good_id) DO UPDATE SET value = GA.value - NEW.good_value, units_count = GA.units_count - NEW.units_count, unit_price_cents = current_unit_price_cents;
+    ON CONFLICT (owner_id, account_id, good_id) DO UPDATE SET value = GA.value - NEW.good_value, units_count = GA.units_count - NEW.units_count;
 
   INSERT INTO OPENBILL_GOODS_AVAILABILITIES AS GA (owner_id, account_id, good_id, value, units_count, unit_price_cents, unit_price_currency)
     VALUES (NEW.owner_id, NEW.to_account_id, NEW.good_id, NEW.good_value, NEW.units_count, NEW.unit_price_cents, NEW.unit_price_currency)

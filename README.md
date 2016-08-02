@@ -1,10 +1,10 @@
 # openbill core
 
-[![Build Status](https://travis-ci.org/openbill-service/openbill-core.svg)](https://travis-ci.org/openbill-service/openbill-core)
+[![Build Status](https://travis-ci.org/openbill-service/openbill-core-goods.svg)](https://travis-ci.org/openbill-service/openbill-core-goods)
 
 Open Source Billing core.
 
-Биллинг создан по принципу меньше фунционала, но больше надежности. 
+Биллинг создан по принципу меньше фунционала, но больше надежности.
 
 # Установка
 
