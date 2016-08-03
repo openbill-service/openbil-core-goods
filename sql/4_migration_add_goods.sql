@@ -7,12 +7,14 @@ CREATE                TABLE OPENBILL_GOODS (
   unit_value          decimal not null default 1,
   details             text,
   meta                hstore not null default ''::hstore,
+  barcode             varchar(44),
   created_at          timestamp without time zone default current_timestamp,
   updated_at          timestamp without time zone default current_timestamp
 );
 
 CREATE UNIQUE INDEX index_goods_on_id ON OPENBILL_GOODS USING btree (id);
 CREATE UNIQUE INDEX index_goods_on_group_id ON OPENBILL_GOODS USING btree (group_id);
+CREATE INDEX index_goods_on_barcode ON OPENBILL_GOODS USING btree (barcode);
 CREATE INDEX index_goods_on_meta ON OPENBILL_GOODS USING gin (meta);
 
 CREATE                TABLE OPENBILL_GOODS_AVAILABILITIES (
