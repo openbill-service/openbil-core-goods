@@ -47,6 +47,8 @@ ALTER TABLE OPENBILL_TRANSACTIONS ADD column good_value decimal;
 ALTER TABLE OPENBILL_TRANSACTIONS ADD column good_unit varchar(128) not null default 'count';
 -- Количество товара
 ALTER TABLE OPENBILL_TRANSACTIONS ADD column units_count integer;
+-- Стоимость одной единицы товара, установленная пользователем, не влияет на учёт
+ALTER TABLE OPENBILL_TRANSACTIONS ADD column actual_unit_price_cents bigint;
 -- Стоимость одной единицы товара
 ALTER TABLE OPENBILL_TRANSACTIONS ADD column unit_price_cents bigint;
 ALTER TABLE OPENBILL_TRANSACTIONS ADD column unit_price_currency char(3);
