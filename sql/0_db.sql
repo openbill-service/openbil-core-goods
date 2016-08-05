@@ -57,7 +57,6 @@ CREATE TABLE OPENBILL_TRANSACTIONS (
   created_at            timestamp without time zone default current_timestamp,
   from_account_id       uuid not null,
   to_account_id         uuid not null CONSTRAINT different_accounts CHECK (to_account_id<>from_account_id),
-  actual_amount_cents   bigint not null CONSTRAINT actual_amount_positive CHECK (actual_amount_cents>0),
   amount_cents          bigint not null CONSTRAINT amount_positive CHECK (amount_cents>0),
   amount_currency       char(3) not null,
   key                   character varying(256) not null,
