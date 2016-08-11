@@ -39,6 +39,7 @@ CREATE INDEX index_accounts_on_created_at ON OPENBILL_ACCOUNTS USING btree (crea
 
 CREATE TABLE OPENBILL_OPERATIONS (
   id              UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  date            timestamp without time zone,
   created_at      timestamp without time zone default current_timestamp,
   from_account_id uuid not null,
   to_account_id   uuid not null,
